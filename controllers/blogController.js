@@ -1,28 +1,7 @@
-const cl = console.log;
+const blogs = require("../data/blog.js")
 
-let blogs = [
-    {
-        "id": "1",
-        "title": "html",
-        "content": "html is a hyper text markup language",
-        "userId": "1"
-    },
-    {
-        "id": "2",
-        "title": "css",
-        "content": "css stand for cascading style sheet",
-        "userId": "2"   
-    }
-]
-
-const express = require("express");
-
-const app = express();
-
-app.use(express.json())
-
-//get api to fetch all blogs
-app.get("/api/blogs", (req, res) => {
+//fetch all data
+const sendBlog = (req, res) => {
     try{
         res.status(200).json({
             success: true,
@@ -36,10 +15,10 @@ app.get("/api/blogs", (req, res) => {
             error: err.message
         })
     }
-}) 
+}
 
-//get api to fetch to single blogs
-app.get("/api/blogs/:id", (req, res) => {
+//fetch single data
+const sendBlogById = (req, res) => {
     try{
         const id = req.params.id;
 
@@ -65,10 +44,10 @@ app.get("/api/blogs/:id", (req, res) => {
             error: err.message
         })
     }
-})
+}
 
-//create new blog
-app.post("/api/blogs", (req, res) => {
+//create
+const createBlog = (req, res) => {
     try{
         let newBlog = {
             id: Date.now().toString(),
@@ -92,10 +71,10 @@ app.post("/api/blogs", (req, res) => {
             error: err.message
         })
     }
-})
+}
 
 //update
-app.patch("/api/blogs/:id", (req, res) => {
+const updateBlog = (req, res) => {
     try{
         let blog = blogs.find(blog => blog.id == req.params.id);
 
@@ -123,10 +102,10 @@ app.patch("/api/blogs/:id", (req, res) => {
             error: err.message
         })
     }
-})
+}
 
 //delete
-app.delete("/api/blogs/:id", (req, res) => {
+const deleteBlog =(req, res) => {
     try{
         let deleteId = req.params.id
         let getIndex = blogs.findIndex(blog => blog.id == deleteId)
@@ -152,8 +131,12 @@ app.delete("/api/blogs/:id", (req, res) => {
             error: err.message
         })
     }
-})
+}
 
-app.listen(3000, () => {
-    cl("Blog data fetched successfully")
-})
+module.exports = {
+    sendBlog,
+    sendBlogById,
+    createBlog,
+    updateBlog,
+    deleteBlog,
+}
